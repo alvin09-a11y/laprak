@@ -6,11 +6,11 @@ void createQueue(Queue &Q) {
 }
 
 bool isEmptyQueue(Queue Q) {
-    return Q.head == -1 && Q.tail == -1;
+    return Q.tail == -1;
 }
 
 bool isFullQueue(Queue Q) {
-    return Q.tail == 4;   // tail sudah di index terakhir
+    return Q.tail == 4;   // ukuran array 5, index terakhir = 4
 }
 
 void enqueue(Queue &Q, infotype x) {
@@ -27,16 +27,17 @@ void enqueue(Queue &Q, infotype x) {
     }
 }
 
-// Alternatif 2: head dan tail sama-sama bergerak maju, tanpa pergeseran
+// Alternatif 1: head tetap di index 0, elemen digeser ke kiri
 infotype dequeue(Queue &Q) {
     infotype x = -1;
     if (!isEmptyQueue(Q)) {
         x = Q.info[Q.head];
-        if (Q.head == Q.tail) {   // elemen terakhir -> queue kosong
+        for (int i = Q.head; i < Q.tail; i++) {
+            Q.info[i] = Q.info[i + 1];
+        }
+        Q.tail--;
+        if (Q.tail == -1) {      // queue menjadi kosong
             Q.head = -1;
-            Q.tail = -1;
-        } else {
-            Q.head++;
         }
     } else {
         cout << "Queue kosong" << endl;
